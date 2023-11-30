@@ -9,3 +9,13 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Product {
+  id               String   @id @default(cuid())
+  name             String
+  price            Int
+  description      String   @map(name: "description")
+  stock            Int     @default(0)
+  lastRestock      DateTime @default(now()) @map(name: "last_restock")
+  salesLastRestock Int      @default(0) @map(name: "sales_last_restock")
+}

@@ -1,27 +1,32 @@
-import type { Metadata } from 'next'
-import { Poppins } from 'next/font/google'
-import './globals.css'
+import type { Metadata } from "next";
+import { Cabin } from "next/font/google";
+import "./globals.css";
+import Navbar from "@/components/Navbar";
 
-const poppins = Poppins({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-poppins',
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900']
+const cabin = Cabin({
+  subsets: ["latin"],
+  variable: "--font-cabin",
 });
 
 export const metadata: Metadata = {
-  title: 'Ganesha Supply',
-  description: 'Tugas Besar LaSTI',
-}
+  title: "Ganesha Supply",
+  description: "Inventory Management System for Photocopy Shop in ITB",
+  icons: {
+    icon: "/logo/logo.svg",
+  }
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
-      <body className={poppins.className}>{children}</body>
+      <body className={cabin.className}>
+        <Navbar />
+        {children}
+      </body>
     </html>
-  )
+  );
 }
