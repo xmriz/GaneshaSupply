@@ -18,4 +18,5 @@ model Product {
   stock            Int      @default(0)
   lastRestock      DateTime @default(now()) @map(name: "last_restock")
   salesLastRestock Int      @default(0) @map(name: "sales_last_restock")
+  image            String   @map(name: "image")
 }

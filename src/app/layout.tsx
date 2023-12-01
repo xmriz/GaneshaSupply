@@ -25,6 +25,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={cabin.className}>
         <Navbar />
+        <div className="mt-28"></div>
         {children}
       </body>
     </html>
