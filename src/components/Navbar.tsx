@@ -73,11 +73,11 @@ const Navbar = () => {
                     <div key={item.label}>
                       <Link href={item.link}>
                         <p
-                          className={`cursor-pointer hover:underline md:bg-green
+                          className={`cursor-pointer hover:underline 
                         ${
                           currentPathName === item.link
-                            ? "md:text-white font-bold"
-                            : "md:text-gray"
+                            ? "text-darkGreen font-bold lg:text-gray"
+                            : "text-darkGreen font-normal lg:text-gray"
                         }`}
                         >
                           {item.label}
