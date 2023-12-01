@@ -16,13 +16,13 @@ import { TbSwitchHorizontal } from "react-icons/tb";
 
 export default function CardStock() {
   return (
-    <Card className="w-[386px] h-[516px] shadow-[0px 2px 10px 0px rgba(0, 0, 0, 0.25)]">
+    <Card className="w-[386px] h-[516px] drop-shadow-md">
       <CardHeader>
         <Image src="/images/image_dummy.jpg" width="326" height="326" alt="Pic" className="w-[326px] h-[326px] object-cover ml-auto mr-auto pt-[8px] "/>
       </CardHeader>
       <CardContent>
         <h2 className="text-3xl font-bold text-darkGreen ">Bolpoin Pen</h2>
-        <div className="flex mt-3 gap-[200px]">
+        <div className="flex mt-5 gap-[200px]">
             <div >
                 <h4 className="text-darkGreen font-bold">Stok</h4>
                 <p className="text-green">730</p>

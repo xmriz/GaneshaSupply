@@ -3,8 +3,7 @@ import PengelolaanInventori from "./components/PengelolaanInventori";
 
 export default function PengelolaanInventoriPage() {
   return (
-    <div className="mt-[62px]">
-      <CardStock/>
+    <div className="">
       <PengelolaanInventori />
     </div> 
   )
