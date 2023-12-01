@@ -17,7 +17,7 @@ export default function Home() {
         <div>
           <Image
             alt="hero-image "
-            src="/images/hero-image.svg"
+            src="/images/hero-image.png"
             width={500}
             height={500}
             className="w-[850px] translate-y-10"
