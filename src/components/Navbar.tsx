@@ -67,17 +67,17 @@ const Navbar = () => {
                 ></span>
               </button>
               {/* link */}
-              <nav className="nav-menu bg-[#EDEDED] scale-0 absolute  shadow-lg rounded-lg max-w-[250px] w-full right-4 top-full duration-500 origin-top-right py-5 lg:py-0 lg:scale-100 lg:block lg:static lg:bg-transparent lg:max-w-full lg:shadow-none lg:rounded-none lg:transition-colors z-[100]">
+              <nav className="nav-menu bg-gray scale-0 absolute  shadow-lg rounded-lg max-w-[250px] w-full right-4 top-full duration-500 origin-top-right py-5 lg:py-0 lg:scale-100 lg:block lg:static lg:bg-transparent lg:max-w-full lg:shadow-none lg:rounded-none lg:transition-colors z-[100]">
                 <ul className="flex flex-col gap-1 lg:flex-row lg:gap-8 items-center">
                   {navbarData.map((item) => (
                     <div key={item.label}>
                       <Link href={item.link}>
                         <p
-                          className={`cursor-pointer hover:underline bg-green
+                          className={`cursor-pointer hover:underline md:bg-green
                         ${
                           currentPathName === item.link
-                            ? "text-white font-bold"
-                            : "text-gray"
+                            ? "md:text-white font-bold"
+                            : "md:text-gray"
                         }`}
                         >
                           {item.label}
