@@ -1,4 +1,4 @@
-import Pembelian from "./components/inventori";
+import Pembelian from "./components/Pembelian";
 
 export default function PembelianPage() {
   return (
