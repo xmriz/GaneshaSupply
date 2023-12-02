@@ -26,12 +26,14 @@ export default function DetailStock(props: productProps) {
         </Button>
       </DialogTrigger>
       <DialogContent>
-        <DialogTitle>
-          {props.name}
-          {props.stock}
-          {`${props.lastRestock}`}
-          {props.salesLastRestock}
-        </DialogTitle>
+        <h1 className="text-[30px] font-bold">{props.name}</h1>
+        <hr></hr>
+        <h2 className="text-darkGreen font-bold">Stok</h2>
+        <h3>{props.stock}</h3>
+        <h2 className="text-darkgreen font-bold">Last Restocked</h2>
+        <h3>{`${props.lastRestock}`}</h3>
+        <h2 className="text-darkGreen font-bold">Sales(since last restock)</h2>
+        <h3>{props.salesLastRestock}</h3>
       </DialogContent>
     </Dialog>
   );
