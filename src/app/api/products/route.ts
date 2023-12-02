@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
       });
 
       if (product) {
-        return NextResponse.json(product, {status: 200});
+        return NextResponse.json(product, { status: 200 });
       } else {
         return NextResponse.next();
       }
@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
 
     const products = await prisma.product.findMany();
 
-    return NextResponse.json(products, {status: 200});
+    return NextResponse.json(products, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.next();
@@ -35,7 +35,7 @@ export async function PUT(req: NextRequest) {
   try {
     const params = new URLSearchParams(req.nextUrl.search);
     const id = params.get("id");
-    
+
     if (id) {
       const product = await prisma.product.findUnique({
         where: {
@@ -45,7 +45,7 @@ export async function PUT(req: NextRequest) {
 
       if (product) {
         const body = await req.json();
-        const {stock, lastRestock, salesLastRestock} = body;
+        const { stock, lastRestock, salesLastRestock } = body;
         const updatedProduct = await prisma.product.update({
           where: {
             id: parseInt(id),
@@ -57,7 +57,7 @@ export async function PUT(req: NextRequest) {
           },
         });
 
-        return NextResponse.json(updatedProduct, {status: 200});
+        return NextResponse.json(updatedProduct, { status: 200 });
       } else {
         return NextResponse.next();
       }
@@ -71,4 +71,3 @@ export async function PUT(req: NextRequest) {
     await prisma.$disconnect();
   }
 }
-
