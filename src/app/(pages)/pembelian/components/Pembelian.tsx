@@ -88,6 +88,8 @@ export default function Pembelian() {
       return;
     }
 
+    window.location.reload();
+
     const productsToUpdate = products
       .filter((product) => product.quantity > 0)
       .map((product) => ({
@@ -108,7 +110,7 @@ export default function Pembelian() {
       await updateProduct(product);
     }
 
-    window.location.reload();
+    setIsLoading(true);
   };
 
   return (
