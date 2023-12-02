@@ -54,6 +54,7 @@ export default function Pembelian() {
   const [products, setProducts] = useState<Product[]>([]);
   const [totalHarga, setTotalHarga] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isPurchased, setIsPurchased] = useState<boolean>(false);
 
   useEffect(() => {
     getDataProducts()
@@ -91,6 +92,7 @@ export default function Pembelian() {
 
     alert("Pembayaran sebesar " + totalHarga + " berhasil dilakukan");
     setIsLoading(true);
+    setIsPurchased(true);
     window.location.reload();
 
     const productsToUpdate = products
@@ -113,6 +115,8 @@ export default function Pembelian() {
       await updateProduct(product);
     }
 
+    setIsLoading(false);
+    setIsPurchased(false);
   };
 
   return (
@@ -121,7 +125,7 @@ export default function Pembelian() {
         <div className="">
           <h1 className="text-darkGreen text-[40px] mb-8">Item Purchase</h1>
         </div>
-        {isLoading ? (
+        {isLoading && !isPurchased ? (
           <div className="flex justify-center items-center h-[500px]">
             <h2 className="animate-pulse text-3xl text-green">Loading . . .</h2>
           </div>
