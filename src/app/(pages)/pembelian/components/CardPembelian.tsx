@@ -18,7 +18,7 @@ export default function CardPembelian(props: CardPembelianProps) {
     >
       <div className="flex flex-row gap-[40px]">
         <div
-          className="w-[180px] h-[180px] bg-white rounded-lg "
+          className="flex w-1/3 bg-white rounded-lg "
           style={{
             backgroundImage: `url(${props.image})`,
             backgroundSize: "contain",
@@ -26,12 +26,12 @@ export default function CardPembelian(props: CardPembelianProps) {
             backgroundRepeat: "no-repeat",
           }}
         ></div>
-        <div className="flex flex-col justify-between grow">
+        <div className="flex flex-col justify-between w-2/3">
           <h1 className="text-darkGreen text-[28px] font-bold">
             {props.title}
           </h1>
           <p className="text-darkGreen text-[20px]">{props.description}</p>
-          <div className="flex flex-row justify-between items-center">
+          <div className="flex flex-col lg:flex-row justify-between gap-8 lg:items-end flex-wrap">
             <div className="flex flex-row gap-10">
               <div className="">
                 <h3 className="text-darkGreen text-[20px] font-bold">Stok</h3>

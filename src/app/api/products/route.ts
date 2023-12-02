@@ -31,3 +31,44 @@ export async function GET(req: NextRequest) {
   }
 }
 
+export async function PUT(req: NextRequest) {
+  try {
+    const params = new URLSearchParams(req.nextUrl.search);
+    const id = params.get("id");
+    
+    if (id) {
+      const product = await prisma.product.findUnique({
+        where: {
+          id: parseInt(id),
+        },
+      });
+
+      if (product) {
+        const body = await req.json();
+        const {stock, lastRestock, salesLastRestock} = body;
+        const updatedProduct = await prisma.product.update({
+          where: {
+            id: parseInt(id),
+          },
+          data: {
+            stock,
+            lastRestock,
+            salesLastRestock,
+          },
+        });
+
+        return NextResponse.json(updatedProduct, {status: 200});
+      } else {
+        return NextResponse.next();
+      }
+    }
+
+    return NextResponse.next();
+  } catch (error) {
+    console.error(error);
+    return NextResponse.next();
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+

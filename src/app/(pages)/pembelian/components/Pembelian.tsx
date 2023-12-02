@@ -9,8 +9,10 @@ interface Product {
   description: string;
   price: number;
   stock: number;
-  image: string;
   quantity: number;
+  lastRestock: string;
+  salesLastRestock: number;
+  image: string;
 }
 
 async function getDataProducts() {
@@ -22,6 +24,32 @@ async function getDataProducts() {
   return data;
 }
 
+async function updateProduct(productUpdate: {
+  id: number;
+  stock: number;
+  lastRestock: string;
+  salesLastRestock: number;
+}) {
+  try {
+    const res = await fetch(`/api/products?id=${productUpdate.id}`, {
+      method: "PUT",
+      body: JSON.stringify(productUpdate),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to update product");
+    }
+
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error("Error updating product:", error);
+    throw error;
+  }
+}
 export default function Pembelian() {
   const [products, setProducts] = useState<Product[]>([]);
   const [totalHarga, setTotalHarga] = useState<number>(0);
@@ -36,7 +64,7 @@ export default function Pembelian() {
         setProducts(productsWithQuantity);
       })
       .catch((err) => {
-        console.log(err);
+        console.error("Error fetching products:", err);
       });
   }, []);
 
@@ -53,13 +81,36 @@ export default function Pembelian() {
     setTotalHarga(newTotalPrice);
   };
 
+  const handlePurchase = async () => {
+    const productsToUpdate = products.map((product) => ({
+      id: product.id,
+      stock: product.stock - product.quantity,
+      lastRestock: new Date().toISOString(),
+      salesLastRestock: product.quantity + product.salesLastRestock,
+    }));
+
+    for (const product of productsToUpdate) {
+      await updateProduct(product);
+    }
+
+    const updatedProducts = products.map((product) => ({
+      ...product,
+      quantity: 0,
+    }));
+    setProducts(updatedProducts);
+    setTotalHarga(0);
+    
+    /* reload page */
+    window.location.reload();
+  };
+
   return (
     <>
       <div className="container mb-28">
         <div className="">
           <h1 className="text-darkGreen text-[40px] mb-8">Item Purchase</h1>
         </div>
-        <div className="grid grid-cols-2 gap-[30px] ">
+        <div className="grid lg:grid-cols-2 gap-[30px] ">
           {products.map((product) => {
             return (
               <CardPembelian
@@ -82,7 +133,10 @@ export default function Pembelian() {
         style={{ boxShadow: "0px -2px 100px 10px rgba(0, 0, 0, 0.25)" }}
       >
         <div className="flex flex-row-reverse gap-10 items-center justify-center">
-          <button className="bg-green text-white px-4 py-2 text-lg rounded-md hover:bg-[#577B56] hover:shadow-lg">
+          <button
+            className="bg-green text-white px-4 py-2 text-lg rounded-md hover:bg-[#577B56] hover:shadow-lg"
+            onClick={handlePurchase}
+          >
             Purchase
           </button>
           <div className="flex flex-col justify-center">

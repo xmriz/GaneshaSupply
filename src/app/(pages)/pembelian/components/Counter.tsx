@@ -35,7 +35,7 @@ export default function Counter(props: CounterProps) {
 
   return (
     <>
-      <div className="flex justify-between text-3xl flex-row-reverse">
+      <div className="flex text-3xl flex-row-reverse">
         <button onClick={handleIncrement} className="rounded  text-darkGreen px-4">+</button>
         <input 
           type="text" 
