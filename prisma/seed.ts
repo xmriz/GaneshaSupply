@@ -19,7 +19,7 @@ const createProduct = async (
       image,
     },
   });
-};
+};  
 
 const main = async () => {
   await clearData();

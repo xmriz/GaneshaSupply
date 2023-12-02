@@ -77,9 +77,6 @@
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
   }
-}
-
-@layer base {
   * {
     @apply border-border;
   }
@@ -111,4 +108,9 @@
 
 .fadeIn.show {
   opacity: 1;
+}
+
+.box-shad{
+  box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.25);
+
 }
