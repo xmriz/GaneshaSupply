@@ -53,6 +53,7 @@ async function updateProduct(productUpdate: {
 export default function Pembelian() {
   const [products, setProducts] = useState<Product[]>([]);
   const [totalHarga, setTotalHarga] = useState<number>(0);
+  const [isStillPurchase, setIsStillPurchase] = useState<boolean>(false);
 
   useEffect(() => {
     getDataProducts()
@@ -82,41 +83,48 @@ export default function Pembelian() {
   };
 
   const handlePurchase = async () => {
-    const productsToUpdate = products.map((product) => ({
-      id: product.id,
-      stock: product.stock - product.quantity,
-      lastRestock: new Date().toISOString(),
-      salesLastRestock: product.quantity + product.salesLastRestock,
-    }));
+    try {
+      setIsStillPurchase(true);
 
-    for (const product of productsToUpdate) {
-      await updateProduct(product);
-    }
+      const productsToUpdate = products.map((product) => ({
+        id: product.id,
+        stock: product.stock - product.quantity,
+        lastRestock: new Date().toISOString(),
+        salesLastRestock: product.quantity + product.salesLastRestock,
+      }));
 
-    const updatedProducts = products.map((product) => ({
-      ...product,
-      quantity: 0,
-    }));
-    setProducts(updatedProducts);
-    setTotalHarga(0);
+      for (const product of productsToUpdate) {
+        await updateProduct(product);
+      }
 
-    // refresh data
-    getDataProducts()
-      .then((data) => {
-        const productsWithQuantity = data.map((product: Product) => {
-          return { ...product, quantity: 0 };
+      const updatedProducts = products.map((product) => ({
+        ...product,
+        quantity: 0,
+      }));
+      setProducts(updatedProducts);
+      setTotalHarga(0);
+
+      // refresh data
+      getDataProducts()
+        .then((data) => {
+          const productsWithQuantity = data.map((product: Product) => {
+            return { ...product, quantity: 0 };
+          });
+
+          setProducts(productsWithQuantity);
+        })
+        .catch((err) => {
+          console.error("Error fetching products:", err);
         });
 
-        setProducts(productsWithQuantity);
-      })
-      .catch((err) => {
-        console.error("Error fetching products:", err);
-      });
-
-    alert("Pembelian Berhasil");
-    window.location.reload();
+      alert("Pembelian Berhasil");
+      window.location.reload();
+    } catch (error) {
+      console.error("Error during purchase:", error);
+    } finally {
+      setIsStillPurchase(false);
+    }
   };
-
   return (
     <>
       <div className="container mb-28">
@@ -148,10 +156,17 @@ export default function Pembelian() {
       >
         <div className="flex flex-row-reverse gap-10 items-center justify-center">
           <button
-            className="bg-green text-white px-4 py-2 text-lg rounded-md hover:bg-[#577B56] hover:shadow-lg"
+            className={`bg-green text-white px-4 py-2 text-lg rounded-md 
+            ${
+              totalHarga === 0 || isStillPurchase
+                ? "opacity-50 cursor-not-allowed"
+                : "hover:bg-[#577B56] hover:shadow-lg"
+            }
+            `}
             onClick={handlePurchase}
+            disabled={totalHarga === 0 || isStillPurchase}
           >
-            Purchase
+            {isStillPurchase ? "Loading..." : "Purchase"}
           </button>
           <div className="flex flex-col justify-center">
             <h3 className="text-darkGreen text-[14px] leading-3">
