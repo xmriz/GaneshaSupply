@@ -54,7 +54,7 @@ export default function Pembelian() {
   const [products, setProducts] = useState<Product[]>([]);
   const [totalHarga, setTotalHarga] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isPurchased, setIsPurchased] = useState<boolean>(false);
+  const [isStillPurchasing, setIsStillPurchasing] = useState<boolean>(false);
 
   useEffect(() => {
     getDataProducts()
@@ -85,38 +85,43 @@ export default function Pembelian() {
   };
 
   const handlePurchase = async () => {
-    if (totalHarga === 0) {
-      alert("Tambahkan barang terlebih dahulu");
-      return;
-    }
+    try {
+      if (totalHarga === 0) {
+        alert("Tambahkan barang terlebih dahulu");
+        return;
+      }
 
-    alert("Pembayaran sebesar " + totalHarga + " berhasil dilakukan");
-    setIsLoading(true);
-    setIsPurchased(true);
-    window.location.reload();
+      setIsLoading(true);
+      setIsStillPurchasing(true);
+      window.location.reload();
 
-    const productsToUpdate = products
-      .filter((product) => product.quantity > 0)
-      .map((product) => ({
-        id: product.id,
-        stock: product.stock - product.quantity,
-        lastRestock: new Date().toISOString(),
-        salesLastRestock: product.quantity + product.salesLastRestock,
+      const productsToUpdate = products
+        .filter((product) => product.quantity > 0)
+        .map((product) => ({
+          id: product.id,
+          stock: product.stock - product.quantity,
+          lastRestock: new Date().toISOString(),
+          salesLastRestock: product.quantity + product.salesLastRestock,
+        }));
+
+      await Promise.all(
+        productsToUpdate.map((product) => updateProduct(product))
+      );
+
+      const updatedProducts = products.map((product) => ({
+        ...product,
+        quantity: 0,
       }));
 
-    const updatedProducts = products.map((product) => ({
-      ...product,
-      quantity: 0,
-    }));
-    setProducts(updatedProducts);
-    setTotalHarga(0);
-
-    for (const product of productsToUpdate) {
-      await updateProduct(product);
+      setProducts(updatedProducts);
+      setTotalHarga(0);
+    } catch (error) {
+      console.error("Error purchasing products:", error);
+    } finally {
+      setIsLoading(false);
+      setIsStillPurchasing(false);
     }
 
-    setIsLoading(false);
-    setIsPurchased(false);
   };
 
   return (
@@ -125,7 +130,7 @@ export default function Pembelian() {
         <div className="">
           <h1 className="text-darkGreen text-[40px] mb-8">Item Purchase</h1>
         </div>
-        {isLoading && !isPurchased ? (
+        {isLoading && isStillPurchasing ? (
           <div className="flex justify-center items-center h-[500px]">
             <h2 className="animate-pulse text-3xl text-green">Loading . . .</h2>
           </div>
