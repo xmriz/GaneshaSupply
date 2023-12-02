@@ -54,6 +54,7 @@ export default function Pembelian() {
   const [products, setProducts] = useState<Product[]>([]);
   const [totalHarga, setTotalHarga] = useState<number>(0);
   const [isStillPurchase, setIsStillPurchase] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     getDataProducts()
@@ -63,6 +64,7 @@ export default function Pembelian() {
         });
 
         setProducts(productsWithQuantity);
+        setIsLoading(false);
       })
       .catch((err) => {
         console.error("Error fetching products:", err);
@@ -85,7 +87,7 @@ export default function Pembelian() {
   const handlePurchase = async () => {
     try {
       setIsStillPurchase(true);
-  
+
       // Filter products with quantity greater than 0
       const productsToUpdate = products
         .filter((product) => product.quantity > 0)
@@ -95,31 +97,31 @@ export default function Pembelian() {
           lastRestock: new Date().toISOString(),
           salesLastRestock: product.quantity + product.salesLastRestock,
         }));
-  
+
       for (const product of productsToUpdate) {
         await updateProduct(product);
       }
-  
+
       const updatedProducts = products.map((product) => ({
         ...product,
         quantity: 0,
       }));
       setProducts(updatedProducts);
       setTotalHarga(0);
-  
+
       // refresh data
       getDataProducts()
         .then((data) => {
           const productsWithQuantity = data.map((product: Product) => {
             return { ...product, quantity: 0 };
           });
-  
+
           setProducts(productsWithQuantity);
         })
         .catch((err) => {
           console.error("Error fetching products:", err);
         });
-  
+
       alert("Pembelian Berhasil");
       window.location.reload();
     } catch (error) {
@@ -134,24 +136,30 @@ export default function Pembelian() {
         <div className="">
           <h1 className="text-darkGreen text-[40px] mb-8">Item Purchase</h1>
         </div>
-        <div className="grid lg:grid-cols-2 gap-[30px] ">
-          {products
-            .slice() // Create a shallow copy of the array to avoid mutating the original state
-            .sort((a, b) => a.name.localeCompare(b.name)) // Sort the products alphabetically by name
-            .map((product) => (
-              <CardPembelian
-                key={product.id}
-                title={product.name}
-                description={product.description}
-                price={product.price}
-                stok={product.stock}
-                image={product.image}
-                onQuantityChange={(quantity) =>
-                  handleQuantityChange(product.id, quantity)
-                }
-              />
-            ))}
-        </div>
+        {isLoading ? (
+          <div className="flex justify-center items-center h-[500px]">
+            <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-green"></div>
+          </div>
+        ) : (
+          <div className="grid lg:grid-cols-2 gap-[30px] ">
+            {products
+              .slice() // Create a shallow copy of the array to avoid mutating the original state
+              .sort((a, b) => a.name.localeCompare(b.name)) // Sort the products alphabetically by name
+              .map((product) => (
+                <CardPembelian
+                  key={product.id}
+                  title={product.name}
+                  description={product.description}
+                  price={product.price}
+                  stok={product.stock}
+                  image={product.image}
+                  onQuantityChange={(quantity) =>
+                    handleQuantityChange(product.id, quantity)
+                  }
+                />
+              ))}
+          </div>
+        )}
       </div>
       <div
         className="fixed flex items-center justify-end bottom-0 h-[75px] left-0 w-full bg-white px-16"
