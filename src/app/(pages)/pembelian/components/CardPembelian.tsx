@@ -16,7 +16,7 @@ export default function CardPembelian(props: CardPembelianProps) {
       className="w-full p-[30px] rounded-lg"
       style={{ boxShadow: "0px 2px 10px 0px rgba(0, 0, 0, 0.25)" }}
     >
-      <div className="flex flex-row gap-[40px]">
+      <div className="flex flex-row gap-[40px] h-full">
         <div
           className="flex w-1/3 bg-white rounded-lg "
           style={{

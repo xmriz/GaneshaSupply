@@ -84,6 +84,12 @@ export default function Pembelian() {
   };
 
   const handlePurchase = async () => {
+    if (totalHarga === 0) {
+      return;
+    }
+
+    window.location.reload();
+
     const productsToUpdate = products
       .filter((product) => product.quantity > 0)
       .map((product) => ({
@@ -104,7 +110,6 @@ export default function Pembelian() {
       await updateProduct(product);
     }
 
-    window.location.reload();
   };
 
   return (

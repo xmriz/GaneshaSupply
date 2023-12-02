@@ -33,6 +33,7 @@ export default function Counter(props: CounterProps) {
     props.onQuantityChange(inputValue);
   }
 
+
   return (
     <>
       <div className="flex text-3xl flex-row-reverse">
