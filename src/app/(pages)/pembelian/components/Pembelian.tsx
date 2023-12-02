@@ -85,9 +85,11 @@ export default function Pembelian() {
 
   const handlePurchase = async () => {
     if (totalHarga === 0) {
+      alert("Tambahkan barang terlebih dahulu");
       return;
     }
 
+    alert("Pembayaran sebesar " + totalHarga + " berhasil dilakukan");
     window.location.reload();
 
     const productsToUpdate = products
