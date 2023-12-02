@@ -85,38 +85,41 @@ export default function Pembelian() {
   const handlePurchase = async () => {
     try {
       setIsStillPurchase(true);
-
-      const productsToUpdate = products.map((product) => ({
-        id: product.id,
-        stock: product.stock - product.quantity,
-        lastRestock: new Date().toISOString(),
-        salesLastRestock: product.quantity + product.salesLastRestock,
-      }));
-
+  
+      // Filter products with quantity greater than 0
+      const productsToUpdate = products
+        .filter((product) => product.quantity > 0)
+        .map((product) => ({
+          id: product.id,
+          stock: product.stock - product.quantity,
+          lastRestock: new Date().toISOString(),
+          salesLastRestock: product.quantity + product.salesLastRestock,
+        }));
+  
       for (const product of productsToUpdate) {
         await updateProduct(product);
       }
-
+  
       const updatedProducts = products.map((product) => ({
         ...product,
         quantity: 0,
       }));
       setProducts(updatedProducts);
       setTotalHarga(0);
-
+  
       // refresh data
       getDataProducts()
         .then((data) => {
           const productsWithQuantity = data.map((product: Product) => {
             return { ...product, quantity: 0 };
           });
-
+  
           setProducts(productsWithQuantity);
         })
         .catch((err) => {
           console.error("Error fetching products:", err);
         });
-
+  
       alert("Pembelian Berhasil");
       window.location.reload();
     } catch (error) {
