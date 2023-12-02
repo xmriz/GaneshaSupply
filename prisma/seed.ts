@@ -1,5 +1,12 @@
 import prisma from "../prismaSingleton/prismaSingleClient";
 
+type ProductCreateInput = {
+  name: string;
+  price: number;
+  description: string;
+  image: string; // Ensure 'image' property is included
+};
+
 // clear data
 const clearData = async () => {
   await prisma.product.deleteMany({});
@@ -17,7 +24,7 @@ const createProduct = async (
       price,
       description,
       image,
-    },
+    } as ProductCreateInput,
   });
 };  
 
