@@ -6,6 +6,7 @@ import { MdInfoOutline } from "react-icons/md";
 import { TbSwitchHorizontal } from "react-icons/tb";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import DetailStock from "./DetailStock";
+import RequestStock from "./RequestStock";
 interface productProps {
   id: number;
   image: string;
@@ -46,9 +47,13 @@ export default function CardStock(props: productProps) {
               lastRestock={props.lastRestock}
               salesLastRestock={props.salesLastRestock}
             />
-            <Button variant="request">
-              <TbSwitchHorizontal className="w-[28px] h-[28px]" color="white" />
-            </Button>
+            <RequestStock
+              key={props.id}
+              name={props.name}
+              stock={props.stock}
+              lastRestock={props.lastRestock}
+              salesLastRestock={props.salesLastRestock}
+            />
           </div>
         </div>
       </div>
