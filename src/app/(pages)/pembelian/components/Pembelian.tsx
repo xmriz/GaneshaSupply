@@ -90,6 +90,7 @@ export default function Pembelian() {
     }
 
     alert("Pembayaran sebesar " + totalHarga + " berhasil dilakukan");
+    setIsLoading(true);
     window.location.reload();
 
     const productsToUpdate = products
@@ -112,7 +113,6 @@ export default function Pembelian() {
       await updateProduct(product);
     }
 
-    setIsLoading(true);
   };
 
   return (
