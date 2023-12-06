@@ -69,3 +69,34 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  const params = new URLSearchParams(req.nextUrl.search);
+  const id = params.get("id");
+
+  if (!id) {
+    return NextResponse.json(
+      { error: "Request ID not provided" },
+      { status: 400 }
+    );
+  }
+
+  try {
+    const request = await prisma.request.delete({
+      where: {
+        id: parseInt(id),
+      },
+    });
+
+    return NextResponse.json(
+      { message: "Request successfully deleted", request },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error deleting Request:", error);
+    return NextResponse.json(
+      { error: "Failed to delete Request" },
+      { status: 500 }
+    );
+  }
+}
