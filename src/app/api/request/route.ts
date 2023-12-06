@@ -5,10 +5,11 @@ interface Params {
   productId: Number;
 }
 
-export async function GET(req: NextRequest, { params }: { params: Params }) {
-  const { productId } = params;
+export async function GET(req: NextRequest) {
+  const params = new URLSearchParams(req.nextUrl.search);
+  const id = params.get("id");
 
-  if (!productId) {
+  if (!id) {
     return NextResponse.json(
       { error: "Request ID not provided" },
       { status: 400 }
@@ -17,7 +18,9 @@ export async function GET(req: NextRequest, { params }: { params: Params }) {
 
   try {
     const request = await prisma.request.findUnique({
-      where: { id: productId },
+      where: {
+        id: parseInt(id),
+      }
     });
 
     if (!request) {
