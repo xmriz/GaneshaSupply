@@ -65,7 +65,7 @@ const PengelolaanInventori = () => {
           <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-green"></div>
         </div>
       ) : (
-        <div className="grid grid-cols-4 gap-[60px] mt-10">
+        <div className="md:grid md:grid-cols-2 lg:grid-cols-4 gap-[60px] lg:gap-[40px] my-10 flex flex-col">
           {products
             .slice() // Create a shallow copy to avoid modifying the original array
             .sort((a, b) => a.name.localeCompare(b.name)) // Sort products alphabetically by name

@@ -115,8 +115,15 @@ export default function WaitStock(props: requestProps) {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    
-  }, []);
+    setRequest(props.request);
+    Promise.all([getDataProducts()])
+      .then(([productsData]) => {
+        setProducts(productsData);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, [props.request]);
 
   // Use optional chaining to handle possible undefined values
   let prod = products.find((o) => o.id === props.productId);
@@ -140,11 +147,13 @@ export default function WaitStock(props: requestProps) {
               <div className="flex gap-5 justify-end mx-5 mt-5">
                 <Button
                   size="sm"
-                  className="h-10 px-5 w-15"
+                  className="h-10 px-5 w-15 bg-green"
                   onClick={() => {
-                    if (request?.amount && prod?.stock) {
-                      handleSubmit(props.productId, request?.amount, prod?.stock);
-                    }
+                    handleSubmit(
+                      props.productId,
+                      request?.amount || 0,
+                      prod?.stock || 0
+                    );
                   }}
                 >
                   Ya
