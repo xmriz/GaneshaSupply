@@ -41,14 +41,21 @@ async function getDataRequest() {
   return data;
 }
 
-const handleSubmit = async (productId: number, amount: number,id:number,stock:number) => {
-  handleDelete(productId);
-  updateProduct({
-    id: id,
+const handleSubmit = async (productId: number, amount: number, stock:number) => {
+  const productUpdate = {
+    id: productId,
     stock: stock + amount,
     lastRestock: new Date().toISOString(),
     salesLastRestock: 0,
-  });
+  };
+
+  try {
+    await updateProduct(productUpdate);
+  } catch (error) {
+    console.error("Error updating product:", error);
+  } finally {
+    await handleDelete(productId);
+  }
 };
 
 async function getDataProducts() {
@@ -119,6 +126,8 @@ export default function WaitStock(props: requestProps) {
         console.log(err);
       });
   }, []);
+
+  // Use optional chaining to handle possible undefined values
   let obj = requests.find((o) => o.productId === props.productId);
   let prod = products.find((o) => o.id === props.productId);
 
@@ -127,7 +136,11 @@ export default function WaitStock(props: requestProps) {
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
-            onClick={() => handleSubmit(props.productId,obj ? obj.amount:0 ,props.productId,prod? prod.stock:0)}
+            onClick={() => {
+              if (obj?.amount && prod?.stock) {
+                handleSubmit(props.productId, obj?.amount, prod?.stock);
+              }
+            }}
             variant="hourglass"
           >
             <FaHourglass className="fill-white" />

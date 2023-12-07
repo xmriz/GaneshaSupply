@@ -10,7 +10,6 @@ interface Product {
   price: number;
   stock: number;
   quantity: number;
-  lastRestock: string;
   salesLastRestock: number;
   image: string;
 }
@@ -27,7 +26,6 @@ async function getDataProducts() {
 async function updateProduct(productUpdate: {
   id: number;
   stock: number;
-  lastRestock: string;
   salesLastRestock: number;
 }) {
   try {
@@ -94,7 +92,6 @@ export default function Pembelian() {
         .map((product) => ({
           id: product.id,
           stock: product.stock - product.quantity,
-          lastRestock: new Date().toISOString(),
           salesLastRestock: product.quantity + product.salesLastRestock,
         }));
 
