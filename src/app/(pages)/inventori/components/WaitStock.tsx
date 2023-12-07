@@ -144,14 +144,15 @@ export default function WaitStock(props: requestProps) {
   return (
     <TooltipProvider>
       <Tooltip>
+      <Dialog>
         <TooltipTrigger asChild>
-          <Dialog>
             <DialogTrigger>
               <Button variant="hourglass">
                 <FaHourglass className="fill-white" />
               </Button>
             </DialogTrigger>
-            <DialogContent>
+        </TooltipTrigger>
+        <DialogContent>
               <div>
                 <h1 className="font-bold">
                   Apakah Anda yakin ingin menyelesaikan request?
@@ -181,7 +182,6 @@ export default function WaitStock(props: requestProps) {
               </div>
             </DialogContent>
           </Dialog>
-        </TooltipTrigger>
         <TooltipContent>
           <p>
             <span className="font-bold">Request Amount</span>: {obj?.amount}

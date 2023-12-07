@@ -35,6 +35,16 @@ async function getDataRequest() {
 }
 
 export default function CardStock(props: productProps) {
+  const restockDate = new Date(props.lastRestock);
+  const tahunRestock = restockDate.getFullYear();
+  const bulanRestock = restockDate.getMonth() + 1;
+  const tanggalRestock = restockDate.getDate();
+  const jamRestock = restockDate.getHours();
+  const menitRestock =
+    (restockDate.getMinutes() < 10 ? "0" : "") + restockDate.getMinutes();
+
+  const jadwalfix = `${tanggalRestock}-${bulanRestock}-${tahunRestock} ${jamRestock}:${menitRestock}`;
+
   const [requests, setRequests] = useState<Request[]>([]);
 
   useEffect(() => {
