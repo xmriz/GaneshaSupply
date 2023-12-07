@@ -66,9 +66,9 @@ export async function POST(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   const params = new URLSearchParams(req.nextUrl.search);
-  const id = params.get("id");
+  const productId = params.get("productId");
 
-  if (!id) {
+  if (!productId) {
     return NextResponse.json(
       { error: "Request ID not provided" },
       { status: 400 }
@@ -78,7 +78,7 @@ export async function DELETE(req: NextRequest) {
   try {
     const request = await prisma.request.delete({
       where: {
-        id: parseInt(id),
+        productId: parseInt(productId),
       },
     });
 

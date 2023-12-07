@@ -29,8 +29,8 @@ async function getDataRequest() {
   return data;
 }
 
-const handleDelete = async (id: number) => {
-  const res = await fetch(`/api/request?id=${id}`, {
+const handleDelete = async (productId: number) => {
+  const res = await fetch(`/api/request?productId=${productId}`, {
     method: "DELETE",
   }).finally(() => {
     window.location.reload();
