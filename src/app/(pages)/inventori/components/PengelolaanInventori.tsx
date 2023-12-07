@@ -46,8 +46,10 @@ const PengelolaanInventori = () => {
         </div>
       ) : (
         <div className="grid grid-cols-4 gap-[60px] mt-10">
-          {products.map((product) => {
-            return (
+          {products
+            .slice() // Create a shallow copy to avoid modifying the original array
+            .sort((a, b) => a.name.localeCompare(b.name)) // Sort products alphabetically by name
+            .map((product) => (
               <CardStock
                 key={product.id}
                 id={product.id}
@@ -57,8 +59,7 @@ const PengelolaanInventori = () => {
                 salesLastRestock={product.salesLastRestock}
                 image={product.image}
               />
-            );
-          })}
+            ))}
         </div>
       )}
     </div>

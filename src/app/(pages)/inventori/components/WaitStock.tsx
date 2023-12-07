@@ -16,6 +16,18 @@ interface Request {
   productId: number;
 }
 
+interface Product {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  stock: number;
+  quantity: number;
+  lastRestock: string;
+  salesLastRestock: number;
+  image: string;
+}
+
 interface requestProps {
   productId: number;
 }
@@ -27,6 +39,52 @@ async function getDataRequest() {
 
   const data = await res.json();
   return data;
+}
+
+const handleSubmit = async (productId: number, amount: number,id:number,stock:number) => {
+  handleDelete(productId);
+  updateProduct({
+    id: id,
+    stock: stock + amount,
+    lastRestock: new Date().toISOString(),
+    salesLastRestock: 0,
+  });
+};
+
+async function getDataProducts() {
+  const res = await fetch("/api/products", {
+    method: "GET",
+  });
+
+  const data = await res.json();
+  return data;
+}
+
+async function updateProduct(productUpdate: {
+  id: number;
+  stock: number;
+  lastRestock: string;
+  salesLastRestock: number;
+}) {
+  try {
+    const res = await fetch(`/api/products?id=${productUpdate.id}`, {
+      method: "PUT",
+      body: JSON.stringify(productUpdate),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to update product");
+    }
+
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error("Error updating product:", error);
+    throw error;
+  }
 }
 
 const handleDelete = async (productId: number) => {
@@ -43,6 +101,7 @@ const handleDelete = async (productId: number) => {
 
 export default function WaitStock(props: requestProps) {
   const [requests, setRequests] = useState<Request[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     getDataRequest()
@@ -52,15 +111,23 @@ export default function WaitStock(props: requestProps) {
       .catch((err) => {
         console.log(err);
       });
+    getDataProducts()
+      .then((dataProd) => {
+        setProducts(dataProd);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
   let obj = requests.find((o) => o.productId === props.productId);
+  let prod = products.find((o) => o.id === props.productId);
 
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
-            onClick={() => handleDelete(props.productId)}
+            onClick={() => handleSubmit(props.productId,obj ? obj.amount:0 ,props.productId,prod? prod.stock:0)}
             variant="hourglass"
           >
             <FaHourglass className="fill-white" />
