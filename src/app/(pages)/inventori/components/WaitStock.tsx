@@ -36,15 +36,7 @@ interface Product {
 
 interface requestProps {
   productId: number;
-}
-
-async function getDataRequest() {
-  const res = await fetch("/api/request", {
-    method: "GET",
-  });
-
-  const data = await res.json();
-  return data;
+  request: Request;
 }
 
 const handleSubmit = async (
@@ -117,74 +109,62 @@ const handleDelete = async (productId: number) => {
 };
 
 export default function WaitStock(props: requestProps) {
-  const [requests, setRequests] = useState<Request[]>([]);
+  const [request, setRequest] = useState<Request | undefined | null>(
+    props.request
+  );
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    getDataRequest()
-      .then((dataReq) => {
-        setRequests(dataReq);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    getDataProducts()
-      .then((dataProd) => {
-        setProducts(dataProd);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    
   }, []);
 
   // Use optional chaining to handle possible undefined values
-  let obj = requests.find((o) => o.productId === props.productId);
   let prod = products.find((o) => o.id === props.productId);
 
   return (
     <TooltipProvider>
       <Tooltip>
-      <Dialog>
-        <TooltipTrigger asChild>
+        <Dialog>
+          <TooltipTrigger asChild>
             <DialogTrigger>
               <Button variant="hourglass">
                 <FaHourglass className="fill-white" />
               </Button>
             </DialogTrigger>
-        </TooltipTrigger>
-        <DialogContent>
-              <div>
-                <h1 className="font-bold">
-                  Apakah Anda yakin ingin menyelesaikan request?
-                </h1>
-                <div className="flex gap-5 justify-end mx-5 mt-5">
+          </TooltipTrigger>
+          <DialogContent>
+            <div>
+              <h1 className="font-bold">
+                Apakah Anda yakin ingin menyelesaikan request?
+              </h1>
+              <div className="flex gap-5 justify-end mx-5 mt-5">
+                <Button
+                  size="sm"
+                  className="h-10 px-5 w-15"
+                  onClick={() => {
+                    if (request?.amount && prod?.stock) {
+                      handleSubmit(props.productId, request?.amount, prod?.stock);
+                    }
+                  }}
+                >
+                  Ya
+                </Button>
+                <DialogClose asChild>
                   <Button
+                    variant="destructive"
                     size="sm"
                     className="h-10 px-5 w-15"
-                    onClick={() => {
-                      if (obj?.amount && prod?.stock) {
-                        handleSubmit(props.productId, obj?.amount, prod?.stock);
-                      }
-                    }}
                   >
-                    Ya
+                    Tidak
                   </Button>
-                  <DialogClose asChild>
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      className="h-10 px-5 w-15"
-                    >
-                      Tidak
-                    </Button>
-                  </DialogClose>
-                </div>
+                </DialogClose>
               </div>
-            </DialogContent>
-          </Dialog>
+            </div>
+          </DialogContent>
+        </Dialog>
         <TooltipContent>
           <p>
-            <span className="font-bold">Request Amount</span>: {obj?.amount}
+            <span className="font-bold">Request Amount</span>: {request?.amount}
           </p>
         </TooltipContent>
       </Tooltip>

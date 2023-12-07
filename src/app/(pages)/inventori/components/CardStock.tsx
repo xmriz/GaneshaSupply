@@ -10,14 +10,6 @@ import RequestStock from "./RequestStock";
 import WaitStock from "./WaitStock";
 import { useState,useEffect } from "react";
 
-interface productProps {
-  id: number;
-  image: string;
-  name: string;
-  stock: number;
-  lastRestock: Date;
-  salesLastRestock: number;
-}
 interface Request {
   id: number;
   timeReq: Date;
@@ -25,14 +17,23 @@ interface Request {
   productId: number;
 }
 
-async function getDataRequest() {
-  const res = await fetch("/api/request", {
-    method: "GET",
-  });
-
-  const data = await res.json();
-  return data;
+interface productProps {
+  id: number;
+  image: string;
+  name: string;
+  stock: number;
+  lastRestock: Date;
+  salesLastRestock: number;
+  request: Request | undefined | null;
 }
+
+interface Request {
+  id: number;
+  timeReq: Date;
+  amount: number;
+  productId: number;
+}
+
 
 export default function CardStock(props: productProps) {
   const restockDate = new Date(props.lastRestock);
@@ -45,19 +46,11 @@ export default function CardStock(props: productProps) {
 
   const jadwalfix = `${tanggalRestock}-${bulanRestock}-${tahunRestock} ${jamRestock}:${menitRestock}`;
 
-  const [requests, setRequests] = useState<Request[]>([]);
+  const [request, setRequest] = useState<Request | undefined | null>(props.request);
 
   useEffect(() => {
-    getDataRequest()
-      .then((dataReq) => {
-        setRequests(dataReq);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-      
-  }, []);
-  let obj = requests.find(o => o.productId === props.id);
+    setRequest(props.request);
+  }, [props.request]);
 
   return (
     <div
@@ -89,10 +82,11 @@ export default function CardStock(props: productProps) {
               lastRestock={props.lastRestock}
               salesLastRestock={props.salesLastRestock}
             />
-            {(obj)?
+            {(request)?
               <WaitStock
               key={props.id}
               productId = {props.id}
+              request = {request}
             />:
               <RequestStock
               key={props.id}

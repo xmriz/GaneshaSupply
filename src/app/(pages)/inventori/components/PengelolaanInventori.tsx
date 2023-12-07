@@ -11,6 +11,13 @@ interface Product {
   salesLastRestock: number;
 }
 
+interface Request {
+  id: number;
+  timeReq: Date;
+  amount: number;
+  productId: number;
+}
+
 async function getDataProducts() {
   const res = await fetch("/api/products", {
     method: "GET",
@@ -20,17 +27,30 @@ async function getDataProducts() {
   return data;
 }
 
+async function getDataRequest() {
+  const res = await fetch("/api/request", {
+    method: "GET",
+  });
+
+  const data = await res.json();
+  return data;
+}
+
 const PengelolaanInventori = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [requests, setRequests] = useState<Request[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    getDataProducts()
-      .then((data) => {
-        setProducts(data);
+    setIsLoading(true);
+
+    Promise.all([getDataProducts(), getDataRequest()])
+      .then(([productsData, requestsData]) => {
+        setProducts(productsData);
+        setRequests(requestsData);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       })
       .finally(() => {
         setIsLoading(false);
@@ -58,6 +78,7 @@ const PengelolaanInventori = () => {
                 lastRestock={product.lastRestock}
                 salesLastRestock={product.salesLastRestock}
                 image={product.image}
+                request={requests.find((req) => req.productId === product.id)}
               />
             ))}
         </div>
