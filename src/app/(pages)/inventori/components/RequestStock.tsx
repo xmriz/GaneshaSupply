@@ -31,8 +31,9 @@ export default function RequestStock(props: productProps) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
+    }).finally(() => {
+      window.location.reload();
     });
-
 
     if (!res.ok) {
       throw new Error("Failed to request stock");

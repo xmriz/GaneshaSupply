@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import DetailStock from "./DetailStock";
 import RequestStock from "./RequestStock";
 import WaitStock from "./WaitStock";
+import { useState,useEffect } from "react";
 
 interface productProps {
   id: number;
@@ -17,8 +18,37 @@ interface productProps {
   lastRestock: Date;
   salesLastRestock: number;
 }
+interface Request {
+  id: number;
+  timeReq: Date;
+  amount: number;
+  productId: number;
+}
+
+async function getDataRequest() {
+  const res = await fetch("/api/request", {
+    method: "GET",
+  });
+
+  const data = await res.json();
+  return data;
+}
 
 export default function CardStock(props: productProps) {
+  const [requests, setRequests] = useState<Request[]>([]);
+
+  useEffect(() => {
+    getDataRequest()
+      .then((dataReq) => {
+        setRequests(dataReq);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+      
+  }, []);
+  let obj = requests.find(o => o.productId === props.id);
+
   return (
     <div
       className="w-full shadow-lg rounded-lg p-[30px] "
@@ -49,18 +79,20 @@ export default function CardStock(props: productProps) {
               lastRestock={props.lastRestock}
               salesLastRestock={props.salesLastRestock}
             />
-            <RequestStock
+            {(obj)?
+              <WaitStock
+              key={props.id}
+              productId = {props.id}
+            />:
+              <RequestStock
               key={props.id}
               productId = {props.id}
               name={props.name}
               stock={props.stock}
               lastRestock={props.lastRestock}
               salesLastRestock={props.salesLastRestock}
-            />
-            <WaitStock
-              key={props.id}
-              productId = {props.id}
-            />
+              />
+            }
           </div>
         </div>
       </div>
