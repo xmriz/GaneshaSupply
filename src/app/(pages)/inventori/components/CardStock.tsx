@@ -7,6 +7,8 @@ import { TbSwitchHorizontal } from "react-icons/tb";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import DetailStock from "./DetailStock";
 import RequestStock from "./RequestStock";
+import WaitStock from "./WaitStock";
+
 interface productProps {
   id: number;
   image: string;
@@ -49,10 +51,15 @@ export default function CardStock(props: productProps) {
             />
             <RequestStock
               key={props.id}
+              productId = {props.id}
               name={props.name}
               stock={props.stock}
               lastRestock={props.lastRestock}
               salesLastRestock={props.salesLastRestock}
+            />
+            <WaitStock
+              key={props.id}
+              productId = {props.id}
             />
           </div>
         </div>

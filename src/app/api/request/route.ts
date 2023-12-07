@@ -6,37 +6,32 @@ interface Params {
 }
 
 export async function GET(req: NextRequest) {
-  const params = new URLSearchParams(req.nextUrl.search);
-  const id = params.get("id");
-
-  if (!id) {
-    return NextResponse.json(
-      { error: "Request ID not provided" },
-      { status: 400 }
-    );
-  }
-
   try {
-    const request = await prisma.request.findUnique({
-      where: {
-        id: parseInt(id),
-      }
-    });
+    const params = new URLSearchParams(req.nextUrl.search);
+    const id = params.get("id");
 
-    if (!request) {
-      return NextResponse.json({ error: "Request not found" }, { status: 404 });
+    if (id) {
+      const requests = await prisma.request.findUnique({
+        where: {
+          id: parseInt(id),
+        },
+      });
+
+      if (requests) {
+        return NextResponse.json(requests, { status: 200 });
+      } else {
+        return NextResponse.next();
+      }
     }
 
-    return NextResponse.json(
-      { message: "Request successfully retrieved", request },
-      { status: 200 }
-    );
+    const requests = await prisma.request.findMany();
+
+    return NextResponse.json(requests, { status: 200 });
   } catch (error) {
-    console.error("Error retrieving Request:", error);
-    return NextResponse.json(
-      { error: "Failed to retrieve Request" },
-      { status: 500 }
-    );
+    console.error(error);
+    return NextResponse.next();
+  } finally {
+    await prisma.$disconnect();
   }
 }
 
