@@ -5,6 +5,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  DialogClose,
+} from "@/components/ui/dialog";
 
 import { FaHourglass } from "react-icons/fa6";
 import { useEffect, useState } from "react";
@@ -41,7 +47,11 @@ async function getDataRequest() {
   return data;
 }
 
-const handleSubmit = async (productId: number, amount: number, stock:number) => {
+const handleSubmit = async (
+  productId: number,
+  amount: number,
+  stock: number
+) => {
   const productUpdate = {
     id: productId,
     stock: stock + amount,
@@ -135,16 +145,42 @@ export default function WaitStock(props: requestProps) {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button
-            onClick={() => {
-              if (obj?.amount && prod?.stock) {
-                handleSubmit(props.productId, obj?.amount, prod?.stock);
-              }
-            }}
-            variant="hourglass"
-          >
-            <FaHourglass className="fill-white" />
-          </Button>
+          <Dialog>
+            <DialogTrigger>
+              <Button variant="hourglass">
+                <FaHourglass className="fill-white" />
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <div>
+                <h1 className="font-bold">
+                  Apakah Anda yakin ingin menyelesaikan request?
+                </h1>
+                <div className="flex gap-5 justify-end mx-5 mt-5">
+                  <Button
+                    size="sm"
+                    className="h-10 px-5 w-15"
+                    onClick={() => {
+                      if (obj?.amount && prod?.stock) {
+                        handleSubmit(props.productId, obj?.amount, prod?.stock);
+                      }
+                    }}
+                  >
+                    Ya
+                  </Button>
+                  <DialogClose asChild>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      className="h-10 px-5 w-15"
+                    >
+                      Tidak
+                    </Button>
+                  </DialogClose>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
         </TooltipTrigger>
         <TooltipContent>
           <p>
