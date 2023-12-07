@@ -15,6 +15,16 @@ interface productProps {
 }
 
 export default function DetailStock(props: productProps) {
+  const restockDate = new Date(props.lastRestock);
+  const tahunRestock = restockDate.getFullYear();
+  const bulanRestock = restockDate.getMonth() + 1;
+  const tanggalRestock = restockDate.getDate();
+  const jamRestock = restockDate.getHours();
+  const menitRestock =
+    (restockDate.getMinutes() < 10 ? "0" : "") + restockDate.getMinutes();
+
+  const jadwalfix = `${tanggalRestock}-${bulanRestock}-${tahunRestock} ${jamRestock}:${menitRestock}`;
+
   return (
     <Dialog>
       <DialogTrigger>
@@ -31,7 +41,7 @@ export default function DetailStock(props: productProps) {
         <h2 className="text-darkGreen font-bold">Stok</h2>
         <h3>{props.stock}</h3>
         <h2 className="text-darkgreen font-bold">Last Restocked</h2>
-        <h3>{`${props.lastRestock}`}</h3>
+        <h3>{jadwalfix}</h3>
         <h2 className="text-darkGreen font-bold">Sales(since last restock)</h2>
         <h3>{props.salesLastRestock}</h3>
       </DialogContent>
