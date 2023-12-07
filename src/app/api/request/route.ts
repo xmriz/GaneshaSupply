@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
 
   //   validate body?
-  if (!body.productId || !body.timeReq || !body.amount) {
+  if (!body.productId || !body.amount) {
     return NextResponse.json({ error: "Invalid body" }, { status: 400 });
   }
 
@@ -48,7 +48,6 @@ export async function POST(req: NextRequest) {
     const request = await prisma.request.create({
       data: {
         productId : body.productId,
-        timeReq: body.timeReq,
         amount : body.amount,
       },
     });

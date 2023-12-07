@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { TbSwitchHorizontal } from "react-icons/tb";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { useRef } from "react";
 
 interface productProps {
   productId: number;
@@ -13,56 +12,31 @@ interface productProps {
   salesLastRestock: number;
 }
 interface requestNew {
-  productId: number,
-  amountReq:number,
+  productId: number;
+  amount: number;
 }
 
 
 
 export default function RequestStock(props: productProps) {
-  const amount = useRef()
-
-  const submitHandler = (event:any) => {
-    event.preventDefault();
-    const amountEntered = event.target.amount.value;
-
-    const requestBaru = {
-      productId : props.productId,
-      timeReq : new Date(),
-      amountReq : amountEntered,
+  const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const data: requestNew = {
+      productId: props.productId,
+      amount: parseInt(e.currentTarget.amount.value),
     };
-  
-    fetch("/api/request", {
+    const res = await fetch("/api/request", {
       method: "POST",
-      body: JSON.stringify(requestBaru),
       headers: {
         "Content-Type": "application/json",
       },
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-  
-        response
-          .json()
-          .then((data) => {
-            throw new Error(data.message || "Something went wrong");
-          })
-          .catch((error) => {
-            console.log(error)
-          });
-      })
-      .then((data) => {
-        console.log("success")
-        location.reload();
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .then(() => {
-        location.reload();
-      });
+      body: JSON.stringify(data),
+    });
+
+
+    if (!res.ok) {
+      throw new Error("Failed to request stock");
+    }
   };
 
   return (
