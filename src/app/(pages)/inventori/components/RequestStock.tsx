@@ -18,7 +18,7 @@ interface requestNew {
 }
 
 export default function RequestStock(props: productProps) {
-  const [amount, setAmount] = useState<number>(1);
+  const [amount, setAmount] = useState<number>();
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -45,12 +45,15 @@ export default function RequestStock(props: productProps) {
     let value = e.currentTarget.value;
 
     // Ensure value is a positive number
-    value = value.replace(/\D/g, ""); // Remove non-numeric characters
     const numericValue = parseInt(value, 10);
 
     // Update state only if the value is a positive number
     if (!isNaN(numericValue) && numericValue > 0) {
       setAmount(numericValue);
+    }  else if(numericValue === 0) {
+      setAmount(1);
+    } else{
+      setAmount(Math.abs(numericValue));
     }
   };
 
@@ -70,7 +73,7 @@ export default function RequestStock(props: productProps) {
           onSubmit={submitHandler}
         >
           <Input
-            type="text"
+            type="number"
             value={amount}
             name="amount"
             placeholder="Jumlah"
