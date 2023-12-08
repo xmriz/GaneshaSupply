@@ -59,7 +59,7 @@ const PengelolaanInventori = () => {
 
   return (
     <div className="container mx-auto">
-      <h1 className="text-[40px]">Inventory Management System</h1>
+      <h1 className="text-[40px] text-darkGreen mb-8">Inventory Management System</h1>
       {isLoading ? (
         <div className="flex justify-center items-center h-[500px]">
           <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-green"></div>
