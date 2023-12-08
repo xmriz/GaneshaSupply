@@ -57,7 +57,7 @@ export default function CardStock(props: productProps) {
 
   return (
     <div
-      className="w-full shadow-lg rounded-lg p-[30px] "
+      className={`w-full shadow-lg rounded-lg p-[30px] ${props.stock <= 0 ? "bg-red-200" : props.stock <= 10 ? "bg-yellow-100" : "bg-white"}`}
       style={{ boxShadow: "0px 2px 10px 0px rgba(0, 0, 0, 0.25)" }}
     >
       <div className=" w-full aspect-square ">

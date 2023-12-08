@@ -74,7 +74,7 @@ const PengelolaanInventori = () => {
         <div className="md:grid md:grid-cols-2 lg:grid-cols-4 gap-[60px] lg:gap-[40px] my-10 flex flex-col">
           {products
             .slice() // Create a shallow copy to avoid modifying the original array
-            .sort((a, b) => a.name.localeCompare(b.name)) // Sort products alphabetically by name
+            .sort((a, b) => a.stock - b.stock) // Sort products by stock in ascending order
             .map((product) => (
               <CardStock
                 key={product.id}
