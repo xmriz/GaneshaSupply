@@ -1,4 +1,4 @@
-<h1>Data Challenge DSW 2023</h1>
+<h1>Tugas Besar LASTI Kelompok 8 2023</h1>
 
 <p>
   <!-- Typing SVG by DenverCoder1 - https://github.com/DenverCoder1/readme-typing-svg -->
@@ -47,23 +47,21 @@
 </p>
 
 
-## Getting Started
+## Deskripsi Sistem
+  Perangkat lunak yang akan dikembangkan dalam proyek kami merupakan sebuah website bernama GaneshaSupply.
+  <br><br>
+  Website ini dirancang sebagai tempat bagi mahasiswa untuk dapat membeli barang alat tulis serta meminta jasa pencetakan dokumen. Website ini juga menyediakan layanan manajemen inventori, penjualan dan tracking distribusi. Fokus dari implementasi website yang dirancang meliputi manajemen inventori dan penjualan yang bersifat minim untuk mensimulasikan perubahan stok dan data detail dari produk saat melakukan penjualan.
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
+# Informasi Program
+**Link website**
+<br>
+Link website GaneshaSupply dapat diakses melalui https://ganesha-supply.vercel.app/
+**Dengan localhost**
+<br>
+Web GaneshaSupply juga dapat dibuka pada localhost dengan tahap-tahap berikut:
+<br>
+1. Clone repository ini
+3. Buka repository yang sudah diclone pada file explorer
+4. Copy path pada file explorer dan lakukan cd + path pada cmd
+5. Ketik **npm run dev** pada cmd
+6. Masuki localhost:3000
