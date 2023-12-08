@@ -49,7 +49,7 @@ export default function CardPembelian(props: CardPembelianProps) {
               </div>
             </div>
             <div className="">
-              <Counter onQuantityChange={props.onQuantityChange} />
+              <Counter onQuantityChange={props.onQuantityChange} stok={props.stok} />
             </div>
           </div>
         </div>

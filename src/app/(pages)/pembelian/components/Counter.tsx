@@ -2,13 +2,14 @@ import React, { useState, ChangeEvent } from "react";
 
 interface CounterProps {
   onQuantityChange: (quantity: number) => void;
+  stok: number;
 }
 
 export default function Counter(props: CounterProps) {
   const [count, setCount] = useState<number>(0);
 
   const handleIncrement = () => {
-    if (count >= 0) {
+    if (count < props.stok) {
       setCount(count + 1);
     }
 
@@ -24,13 +25,22 @@ export default function Counter(props: CounterProps) {
   }
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const inputValue = parseInt(event.target.value, 10);
-    
-    if (!isNaN(inputValue) && inputValue >= 0) {
-      setCount(inputValue);
+    const value = event.target.value;
+
+    if (value === "") {
+      setCount(0);
+      props.onQuantityChange(0);
+    } else {
+      const number = parseInt(value);
+
+      if (number > props.stok) {
+        setCount(props.stok);
+        props.onQuantityChange(props.stok);
+      } else {
+        setCount(number);
+        props.onQuantityChange(number);
+      }
     }
-    
-    props.onQuantityChange(inputValue);
   }
 
 
