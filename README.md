@@ -20,27 +20,27 @@
     <tr>
         <td>1.</td>
         <td>Ariq</td>
-        <td>18221XXX</td>
+        <td>18221043</td>
     </tr>
     <tr>
         <td>2.</td>
         <td>Amriz</td>
-        <td>18221XXX</td>
+        <td>18221071</td>
     </tr>
     <tr>
         <td>3.</td>
         <td>Satya</td>
-        <td>18221XXX</td>
+        <td>18221117</td>
     </tr>
     <tr>
         <td>4.</td>
         <td>Rana</td>
-        <td>18221XXX</td>
+        <td>18221139</td>
     </tr>
     <tr>
         <td>5.</td>
         <td>Nicholas</td>
-        <td>18221XXX</td>
+        <td>18221165</td>
     </tr>
 
 </table>
@@ -56,6 +56,8 @@
 **Link website**
 <br>
 Link website GaneshaSupply dapat diakses melalui https://ganesha-supply.vercel.app/
+<br>
+<br>
 **Dengan localhost**
 <br>
 Web GaneshaSupply juga dapat dibuka pada localhost dengan tahap-tahap berikut:
