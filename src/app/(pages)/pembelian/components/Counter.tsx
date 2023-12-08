@@ -11,17 +11,15 @@ export default function Counter(props: CounterProps) {
   const handleIncrement = () => {
     if (count < props.stok) {
       setCount(count + 1);
+      props.onQuantityChange(count + 1);
     }
-
-    props.onQuantityChange(count + 1);
   }
 
   const handleDecrement = () => {
     if (count > 0) {
       setCount(count - 1);
+      props.onQuantityChange(count - 1);
     }
-
-    props.onQuantityChange(count - 1);
   }
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
