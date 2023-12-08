@@ -75,7 +75,9 @@ export default function CardStock(props: productProps) {
         <div className="flex items-end w-full justify-between ">
           <div className="pt-5">
             <h4 className="text-darkGreen font-bold text-xl">Stok</h4>
-            <p className="text-green text-lg pt-2">{props.stock}</p>
+            <p className={`text-green text-lg pt-2 ${
+              props.stock <= 0 ? "text-red-600 font-extrabold text-2xl" : props.stock <= 10 ? "text-yellow-500 font-extrabold text-2xl" : "text-green"
+            }`}>{props.stock}</p>
           </div>
           <div className="grid grid-cols-2 gap-4 ">
             <DetailStock
