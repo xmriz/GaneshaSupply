@@ -19,4 +19,13 @@ model Product {
   lastRestock      DateTime @default(now()) @map(name: "last_restock")
   salesLastRestock Int      @default(0) @map(name: "sales_last_restock")
   image            String   @map(name: "image")
+  requests         Request?
+}
+
+model Request {
+  id        Int      @id @default(autoincrement())
+  timeReq   DateTime @default(now()) @map(name: "time_req")
+  amount    Int
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int @unique
 }

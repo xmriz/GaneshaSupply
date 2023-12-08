@@ -6,6 +6,17 @@ import { MdInfoOutline } from "react-icons/md";
 import { TbSwitchHorizontal } from "react-icons/tb";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import DetailStock from "./DetailStock";
+import RequestStock from "./RequestStock";
+import WaitStock from "./WaitStock";
+import { useState,useEffect } from "react";
+
+interface Request {
+  id: number;
+  timeReq: Date;
+  amount: number;
+  productId: number;
+}
+
 interface productProps {
   id: number;
   image: string;
@@ -13,9 +24,34 @@ interface productProps {
   stock: number;
   lastRestock: Date;
   salesLastRestock: number;
+  request: Request | undefined | null;
 }
 
+interface Request {
+  id: number;
+  timeReq: Date;
+  amount: number;
+  productId: number;
+}
+
+
 export default function CardStock(props: productProps) {
+  const restockDate = new Date(props.lastRestock);
+  const tahunRestock = restockDate.getFullYear();
+  const bulanRestock = restockDate.getMonth() + 1;
+  const tanggalRestock = restockDate.getDate();
+  const jamRestock = restockDate.getHours();
+  const menitRestock =
+    (restockDate.getMinutes() < 10 ? "0" : "") + restockDate.getMinutes();
+
+  const jadwalfix = `${tanggalRestock}-${bulanRestock}-${tahunRestock} ${jamRestock}:${menitRestock}`;
+
+  const [request, setRequest] = useState<Request | undefined | null>(props.request);
+
+  useEffect(() => {
+    setRequest(props.request);
+  }, [props.request]);
+
   return (
     <div
       className="w-full shadow-lg rounded-lg p-[30px] "
@@ -46,9 +82,21 @@ export default function CardStock(props: productProps) {
               lastRestock={props.lastRestock}
               salesLastRestock={props.salesLastRestock}
             />
-            <Button variant="request">
-              <TbSwitchHorizontal className="w-[28px] h-[28px]" color="white" />
-            </Button>
+            {(request)?
+              <WaitStock
+              key={props.id}
+              productId = {props.id}
+              request = {request}
+            />:
+              <RequestStock
+              key={props.id}
+              productId = {props.id}
+              name={props.name}
+              stock={props.stock}
+              lastRestock={props.lastRestock}
+              salesLastRestock={props.salesLastRestock}
+              />
+            }
           </div>
         </div>
       </div>

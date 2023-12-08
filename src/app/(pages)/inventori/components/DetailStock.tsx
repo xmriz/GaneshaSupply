@@ -14,7 +14,22 @@ interface productProps {
   salesLastRestock: number;
 }
 
+// Function to format the date
+const formatRestockDate = (date: Date): string => {
+  const options: Intl.DateTimeFormatOptions = {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  };
+  return date.toLocaleString("us-EN", options);
+};
+
 export default function DetailStock(props: productProps) {
+  const restockDate = new Date(props.lastRestock);
+  const formattedRestockDate = formatRestockDate(restockDate);
+
   return (
     <Dialog>
       <DialogTrigger>
@@ -31,7 +46,7 @@ export default function DetailStock(props: productProps) {
         <h2 className="text-darkGreen font-bold">Stok</h2>
         <h3>{props.stock}</h3>
         <h2 className="text-darkgreen font-bold">Last Restocked</h2>
-        <h3>{`${props.lastRestock}`}</h3>
+        <h3>{formattedRestockDate}</h3>
         <h2 className="text-darkGreen font-bold">Sales(since last restock)</h2>
         <h3>{props.salesLastRestock}</h3>
       </DialogContent>
