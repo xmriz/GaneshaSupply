@@ -21,10 +21,13 @@ interface productProps {
   id: number;
   image: string;
   name: string;
+  price: number;
+  description: string;
   stock: number;
   lastRestock: Date;
   salesLastRestock: number;
   request: Request | undefined | null;
+
 }
 
 interface Request {
@@ -77,10 +80,14 @@ export default function CardStock(props: productProps) {
           <div className="grid grid-cols-2 gap-4 ">
             <DetailStock
               key={props.id}
+              id={props.id}
               name={props.name}
+              price={props.price}
+              description={props.description}
               stock={props.stock}
               lastRestock={props.lastRestock}
               salesLastRestock={props.salesLastRestock}
+
             />
             {(request)?
               <WaitStock

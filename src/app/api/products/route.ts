@@ -45,15 +45,12 @@ export async function PUT(req: NextRequest) {
 
       if (product) {
         const body = await req.json();
-        const { stock, lastRestock, salesLastRestock } = body;
         const updatedProduct = await prisma.product.update({
           where: {
             id: parseInt(id),
           },
           data: {
-            stock,
-            lastRestock,
-            salesLastRestock,
+            ...body,
           },
         });
 

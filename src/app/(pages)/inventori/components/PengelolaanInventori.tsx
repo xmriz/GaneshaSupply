@@ -5,6 +5,8 @@ import CardStock from "./CardStock";
 interface Product {
   id: number;
   name: string;
+  price: number;
+  description: string;
   stock: number;
   image: string;
   lastRestock: Date;
@@ -59,7 +61,11 @@ const PengelolaanInventori = () => {
 
   return (
     <div className="container mx-auto">
-      <h1 className="text-[40px] text-darkGreen mb-8">Inventory Management System</h1>
+      <div className="flex justify-between">
+        <h1 className="text-[40px] text-darkGreen mb-8">
+          Inventory Management System
+        </h1>
+      </div>
       {isLoading ? (
         <div className="flex justify-center items-center h-[500px]">
           <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-green"></div>
@@ -74,6 +80,8 @@ const PengelolaanInventori = () => {
                 key={product.id}
                 id={product.id}
                 name={product.name}
+                price={product.price}
+                description={product.description}
                 stock={product.stock}
                 lastRestock={product.lastRestock}
                 salesLastRestock={product.salesLastRestock}
