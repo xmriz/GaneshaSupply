@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { TbSwitchHorizontal } from "react-icons/tb";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { useEffect,useState } from 'react';
 
 interface productProps {
   productId: number;
@@ -19,24 +20,30 @@ interface requestNew {
 
 
 export default function RequestStock(props: productProps) {
+  const [valuePos,setValuePos] = useState(true)
+
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data: requestNew = {
-      productId: props.productId,
-      amount: parseInt(e.currentTarget.amount.value),
-    };
-    const res = await fetch("/api/request", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    }).finally(() => {
-      window.location.reload();
-    });
-
-    if (!res.ok) {
-      throw new Error("Failed to request stock");
+    if(e.currentTarget.amount.value >= 0){
+      setValuePos(true)
+      const data: requestNew = {
+        productId: props.productId,
+        amount: parseInt(e.currentTarget.amount.value),
+      };
+      const res = await fetch("/api/request", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }).finally(() => {
+        window.location.reload();
+      });
+      if (!res.ok) {
+        throw new Error("Failed to request stock");
+      }
+    } else{
+      setValuePos(false);
     }
   };
 
@@ -55,6 +62,9 @@ export default function RequestStock(props: productProps) {
           <Input type="number" placeholder="Jumlah" className="h-10" name="amount" required/>
           <Button type="submit" size= "sm" className="h-10">Submit</Button>
         </form>
+        {valuePos === false && <p className="text-red-500">
+          Request Stok harus di atas 0.
+          </p>}
       </DialogContent>
     </Dialog>
   );
