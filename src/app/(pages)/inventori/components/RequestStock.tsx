@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { TbSwitchHorizontal } from "react-icons/tb";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { useState } from "react";
 
 interface productProps {
   productId: number;
@@ -16,9 +17,9 @@ interface requestNew {
   amount: number;
 }
 
-
-
 export default function RequestStock(props: productProps) {
+  const [amount, setAmount] = useState<number>(1);
+
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data: requestNew = {
@@ -40,6 +41,19 @@ export default function RequestStock(props: productProps) {
     }
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.currentTarget.value;
+
+    // Ensure value is a positive number
+    value = value.replace(/\D/g, ""); // Remove non-numeric characters
+    const numericValue = parseInt(value, 10);
+
+    // Update state only if the value is a positive number
+    if (!isNaN(numericValue) && numericValue > 0) {
+      setAmount(numericValue);
+    }
+  };
+
   return (
     <Dialog>
       <DialogTrigger>
@@ -51,9 +65,22 @@ export default function RequestStock(props: productProps) {
         <h1 className="text-[20px] font-bold">
           Berapa jumlah item ini yang ingin direstock?
         </h1>
-        <form className="flex w-full items-center gap-5" onSubmit={submitHandler}>
-          <Input type="number" placeholder="Jumlah" className="h-10" name="amount" required/>
-          <Button type="submit" size= "sm" className="h-10">Submit</Button>
+        <form
+          className="flex w-full items-center gap-5"
+          onSubmit={submitHandler}
+        >
+          <Input
+            type="text"
+            value={amount}
+            name="amount"
+            placeholder="Jumlah"
+            className="h-10"
+            onChange={handleChange}
+            required
+          />
+          <Button type="submit" size="sm" className="h-10">
+            Submit
+          </Button>
         </form>
       </DialogContent>
     </Dialog>
