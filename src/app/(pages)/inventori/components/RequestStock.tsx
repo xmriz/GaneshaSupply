@@ -18,7 +18,7 @@ interface requestNew {
 }
 
 export default function RequestStock(props: productProps) {
-  const [amount, setAmount] = useState<number>();
+  const [amount, setAmount] = useState<string>("");
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -42,18 +42,16 @@ export default function RequestStock(props: productProps) {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.currentTarget.value;
+    const value = e.currentTarget.value;
 
-    // Ensure value is a positive number
-    const numericValue = parseInt(value, 10);
-
-    // Update state only if the value is a positive number
-    if (!isNaN(numericValue) && numericValue > 0) {
-      setAmount(numericValue);
-    }  else if(numericValue === 0) {
-      setAmount(1);
-    } else{
-      setAmount(Math.abs(numericValue));
+    if (value === "0") {
+      setAmount("");
+    } else if (value == "-" || value == "+" || value == "--") {
+      setAmount("");
+    } else if (/^\d+$/.test(value) || value === "") {
+      setAmount(value);
+    } else {
+      setAmount("");
     }
   };
 
@@ -73,7 +71,7 @@ export default function RequestStock(props: productProps) {
           onSubmit={submitHandler}
         >
           <Input
-            type="number"
+            type="text"
             value={amount}
             name="amount"
             placeholder="Jumlah"
